@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WebApi
@@ -27,8 +28,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cat Images", Version = "v1" });
@@ -43,7 +43,7 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cat Images API v1"));
             }
 
             app.UseHttpsRedirection();
