@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApi.DataContracts;
 using WebApi.DataContracts.Users.Mappers;
@@ -29,9 +30,20 @@ namespace WebApi.Controllers
         }
 
         [HttpGet()]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok();
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Guid userId;
+            if(!Guid.TryParse(userIdClaim, out userId))
+            {
+                return BadRequest("No user exist in the system");
+            }
+            var user = await userService.GetById(userId);
+            if(user == null)
+            {
+                return BadRequest("No user exist in the system");
+            }
+            return Ok(user);
         }
 
         [HttpPost()]

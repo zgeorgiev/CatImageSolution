@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CatController : ControllerBase
@@ -22,6 +24,15 @@ namespace WebApi.Controllers
         {
             this.imageService = imageService;
             this.logger = logger;
+        }
+
+        [HttpGet("flipped")]
+        public async Task<IActionResult> GetFlipped(ImageFilters? filter)
+        {
+            var imageResult = await imageService.Get(filter, RotateFlipType.Rotate180FlipX);
+            if (!imageResult.Success) return BadRequest(string.Join(",", imageResult.Errors));
+
+            return File(ImageToByteArray(imageResult.Data), "image/jpeg");
         }
 
         [HttpGet()]
