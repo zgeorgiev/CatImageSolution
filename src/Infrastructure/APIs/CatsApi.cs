@@ -1,4 +1,5 @@
 ﻿using Application.APIs;
+using Domain.Common;
 using Domain.Enums;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,36 +16,43 @@ namespace Infrastructure.APIs
     {
         private static readonly string CATS = "/c";
 
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly IHttpClientFactory clientFactory;
         private readonly ILogger<CatsApi> logger;
 
         public CatsApi(ILogger<CatsApi> logger, IHttpClientFactory clientFactory)
         {
             this.logger = logger;
-            _clientFactory = clientFactory;
+            this.clientFactory = clientFactory;
         }
 
-        public async Task<Stream> Get(ImageFilters? filter)
+        public async Task<Result<Stream>> Get(ImageFilters? filter)
         {
             var url = CATS;
             if(filter.HasValue)
             {
                 url += "?filter=" + filter.ToString().ToLower();
             }
-
+            Result<Stream> result = new();
             try
             {
-                var response = await this._clientFactory.CreateClient("cats").GetAsync(url);
+                var response = await this.clientFactory.CreateClient("cats").GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsStreamAsync();
+                    result.Data = await response.Content.ReadAsStreamAsync();
+                    return result;
+                }
+                else
+                {
+                    this.logger.LogError(response.ReasonPhrase);
+                    result.Errors.Add(response.ReasonPhrase);
                 }
             }
             catch (Exception e)
             {
+                result.Errors.Add(e.Message);
                 this.logger.LogError(e, e.Message);
             }
-            return null;
+            return result;
         }
     }
 }

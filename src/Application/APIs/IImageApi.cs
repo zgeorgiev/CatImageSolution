@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Domain.Common;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,6 @@ namespace Application.APIs
 {
     public interface IImageApi
     {
-        Task<Stream> Get(ImageFilters? filter);
+        Task<Result<Stream>> Get(ImageFilters? filter);
     }
 }

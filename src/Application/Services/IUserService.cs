@@ -9,7 +9,8 @@ namespace Application.Services
 {
     public interface IUserService
     {
-        User Register(User user);
-        User Authenticate(string username, string password);
+        Task<User> RegisterAsync(User user);
+        Task<User> AuthenticateAsync(string username, string password);
+        Task<User> GetById(Guid id);
     }
 }
