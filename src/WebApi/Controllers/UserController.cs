@@ -43,12 +43,12 @@ namespace WebApi.Controllers
             {
                 return BadRequest("No user exist in the system");
             }
-            return Ok(user);
+            return Ok(UserMapper.MapUserEntityToUserDetails(user));
         }
 
         [HttpPost()]
         [AllowAnonymous]
-        public async Task<IActionResult> Post(UserDataContract model)
+        public async Task<IActionResult> Post(UserRegister model)
         {
             return Ok(await this.userService.RegisterAsync(UserMapper.MapDataContractToEntity(model)));
         }

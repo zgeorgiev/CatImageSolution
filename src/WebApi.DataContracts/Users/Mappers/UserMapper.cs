@@ -10,7 +10,7 @@ namespace WebApi.DataContracts.Users.Mappers
 {
     public static class UserMapper
     {
-        public static User MapDataContractToEntity(UserDataContract dc)
+        public static User MapDataContractToEntity(UserRegister dc)
         {
             return new User
             {
@@ -19,13 +19,23 @@ namespace WebApi.DataContracts.Users.Mappers
                 PasswordHash = dc.Password.Hash(dc.Username)
             };
         }
-        public static UserDataContract MapEntityToDataContract(User user)
+        public static UserRegister MapEntityToDataContract(User user)
         {
-            return new UserDataContract
+            return new UserRegister
             {
                 Username = user.Username,
                 Password = user.PasswordHash,
                 Name = user.Name
+            };
+        }
+
+        public static UserDetails MapUserEntityToUserDetails(User user)
+        {
+            return new UserDetails
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Username = user.Username
             };
         }
     }

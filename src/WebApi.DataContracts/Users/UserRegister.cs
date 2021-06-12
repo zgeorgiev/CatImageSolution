@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.DataContracts
 {
-    public class UserDataContract
+    public class UserRegister
     {
         [Required]
         public string Username { get; set; }

@@ -1,4 +1,3 @@
-using Application.Handlers;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +15,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebApi.Filters;
+using WebApi.Handlers;
 
 namespace WebApi
 {
