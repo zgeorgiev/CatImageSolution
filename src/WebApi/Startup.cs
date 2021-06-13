@@ -65,7 +65,7 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Application.Common.IDbContext db)
         {
             if (env.IsDevelopment())
             {
@@ -85,6 +85,8 @@ namespace WebApi
             {
                 endpoints.MapControllers();
             });
+
+            Infrastructure.Persistent.ApplicationDbContextSeed.SeedSampleDataAsync(db);
         }
     }
 }

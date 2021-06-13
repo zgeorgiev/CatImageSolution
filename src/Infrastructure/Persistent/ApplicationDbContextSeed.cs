@@ -7,7 +7,7 @@ namespace Infrastructure.Persistent
 {
     public static class ApplicationDbContextSeed
     {
-        public static async Task SeedSampleDataAsync(IDbContext context)
+        public static async void SeedSampleDataAsync(IDbContext context)
         {
             // If no users exist in the DB create one default
             if (!context.Users.Any())
